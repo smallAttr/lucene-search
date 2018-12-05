@@ -21,7 +21,7 @@ spring:
     application:
         name: lucene-search
     thymeleaf:
-      mode: HTML
+      mode: HTML5
       encoding: utf-8
       servlet:
         content-type: text/html
