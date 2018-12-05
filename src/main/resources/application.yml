@@ -1,0 +1,36 @@
+#默认环境配置
+server:
+    port: 8077
+    servlet:
+        context-path: /lucene-search
+
+#日志配置，spring-boot默认使用的Logback
+logging:
+    file: /logs/lucene-search/app.log
+    file.max-size: 40MB
+    file.max-history: 10
+    pattern:
+        file: '%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n'
+        console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n'
+    level:
+        root: INFO
+        org.springframework: INFO
+        com.apricotforest: INFO
+
+spring:
+    application:
+        name: lucene-search
+    thymeleaf:
+      mode: HTML
+      encoding: utf-8
+      servlet:
+        content-type: text/html
+      cache: false
+      prefix: classpath:/template/
+      suffix: .html
+
+management:
+    server:
+        servlet:
+            context-path: /manage
+        port: 8078
