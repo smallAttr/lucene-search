@@ -31,7 +31,7 @@ public class ChineseSearch {
 
     private static final Logger logger = LoggerFactory.getLogger(ChineseSearch.class);
 
-    public List<String> search(String indexDir, String q) throws Exception {
+    public List<String> search(String indexDir, String queryTerm, String q) throws Exception {
 
         //获取要查询的路径，也就是索引所在的位置
         Directory dir = FSDirectory.open(Paths.get(indexDir));
@@ -40,7 +40,7 @@ public class ChineseSearch {
         //使用中文分词器
         SmartChineseAnalyzer analyzer = new SmartChineseAnalyzer();
         //由中文分词器初始化查询解析器
-        QueryParser parser = new QueryParser("desc", analyzer);
+        QueryParser parser = new QueryParser(queryTerm, analyzer);
         //通过解析要查询的String，获取查询对象
         Query query = parser.parse(q);
 
@@ -54,7 +54,7 @@ public class ChineseSearch {
         logger.info("查询到{}条记录", docs.totalHits);
 
         //如果不指定参数的话，默认是加粗，即<b><b/>
-        SimpleHTMLFormatter simpleHTMLFormatter = new SimpleHTMLFormatter("<b><font color=red>","</font></b>");
+        SimpleHTMLFormatter simpleHTMLFormatter = new SimpleHTMLFormatter("<b><font color=red>", "</font></b>");
         //根据查询对象计算得分，会初始化一个查询结果最高的得分
         QueryScorer scorer = new QueryScorer(query);
         //根据这个得分计算出一个片段
@@ -66,7 +66,7 @@ public class ChineseSearch {
 
         //取出每条查询结果
         List<String> list = new ArrayList<>();
-        for(ScoreDoc scoreDoc : docs.scoreDocs) {
+        for (ScoreDoc scoreDoc : docs.scoreDocs) {
             //scoreDoc.doc相当于docID,根据这个docID来获取文档
             Document doc = searcher.doc(scoreDoc.doc);
             logger.info("city:{}", doc.get("city"));
@@ -74,7 +74,7 @@ public class ChineseSearch {
             String desc = doc.get("desc");
 
             //显示高亮
-            if(desc != null) {
+            if (desc != null) {
                 TokenStream tokenStream = analyzer.tokenStream("desc", new StringReader(desc));
                 String summary = highlighter.getBestFragment(tokenStream, desc);
                 logger.info("高亮后的desc:{}", summary);

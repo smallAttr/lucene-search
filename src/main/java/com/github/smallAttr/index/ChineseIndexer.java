@@ -42,7 +42,7 @@ public class ChineseIndexer {
         for (int i = 0; i < ids.length; i++) {
             Document doc = new Document();
             // 把上面的数据都生成索引，分别用id、city和desc来标识
-            doc.add(new IntField("id", ids[i], Field.Store.YES));
+            doc.add(new IntPoint("id", ids[i]));
             doc.add(new StringField("city", citys[i], Field.Store.YES));
             doc.add(new TextField("desc", descs[i], Field.Store.YES));
             //添加文档
